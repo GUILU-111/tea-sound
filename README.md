@@ -57,7 +57,8 @@
         <div class="player">
             <p>正在播放：青花瓷 · 江南小调</p>
             <audio controls>
-                <source src="青花瓷（1）.mp3" type="audio/mpeg">
+                <!-- 重要：这里必须是 song.mp3 -->
+                <source src="song.mp3" type="audio/mpeg">
                 您的浏览器不支持音频播放。
             </audio>
         </div>
