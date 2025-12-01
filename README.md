@@ -257,5 +257,103 @@
             lastTouchEnd = now;
         }, false);
     </script>
+
+    <!-- ==================== 新增：iPhone访问优化提示 ==================== -->
+    <script>
+    // 增强版iPhone访问优化
+    (function() {
+        // 等待页面加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检测是否为iOS设备
+            const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+            const isGitHub = window.location.hostname.includes('github.io');
+            
+            if (isIOS && isGitHub) {
+                // 创建提示框
+                const notice = document.createElement('div');
+                notice.id = 'ios-optimize-notice';
+                notice.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        padding: 15px;
+                        z-index: 9999;
+                        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                        text-align: center;
+                    ">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                            <span style="font-size: 18px;">📱</span>
+                            <div style="text-align: left;">
+                                <div style="font-weight: 600; font-size: 14px;">iPhone访问优化建议</div>
+                                <div style="font-size: 12px; opacity: 0.9;">GitHub在国内访问可能较慢，点击下方链接获得最佳体验</div>
+                            </div>
+                        </div>
+                        <a href="https://cdn.jsdelivr.net/gh/GUILU-111/tea-sound@main/index.html" 
+                           style="
+                               display: inline-block;
+                               margin-top: 10px;
+                               padding: 8px 20px;
+                               background: white;
+                               color: #667eea;
+                               border-radius: 20px;
+                               text-decoration: none;
+                               font-weight: 600;
+                               font-size: 13px;
+                               box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                           ">
+                            点击切换到优化版本
+                        </a>
+                        <button onclick="document.getElementById('ios-optimize-notice').style.display='none'" 
+                                style="
+                                    position: absolute;
+                                    right: 10px;
+                                    top: 10px;
+                                    background: transparent;
+                                    border: none;
+                                    color: white;
+                                    font-size: 20px;
+                                    cursor: pointer;
+                                ">
+                            ×
+                        </button>
+                    </div>
+                `;
+                
+                // 添加到页面
+                document.body.appendChild(notice);
+                
+                // 调整页面内容位置（避免被提示框遮挡）
+                const originalPadding = document.body.style.paddingTop;
+                document.body.style.paddingTop = '80px';
+                
+                // 点击关闭时恢复
+                notice.querySelector('button').addEventListener('click', function() {
+                    document.body.style.paddingTop = originalPadding;
+                });
+                
+                // 10分钟后自动隐藏（如果评委停留时间很长）
+                setTimeout(() => {
+                    if (document.getElementById('ios-optimize-notice')) {
+                        document.getElementById('ios-optimize-notice').style.opacity = '0';
+                        document.getElementById('ios-optimize-notice').style.transition = 'opacity 0.5s';
+                        setTimeout(() => {
+                            if (document.getElementById('ios-optimize-notice')) {
+                                document.getElementById('ios-optimize-notice').remove();
+                                document.body.style.paddingTop = originalPadding;
+                            }
+                        }, 500);
+                    }
+                }, 600000); // 10分钟
+            }
+        });
+    })();
+    </script>
+    <!-- ==================== iPhone优化代码结束 ==================== -->
+
 </body>
 </html>
