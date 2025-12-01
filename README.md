@@ -1,77 +1,261 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
-    <title>声旅茶帖 | 城市之声</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>声旅茶帖 · 城市之声</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            line-height: 1.6;
         }
-        .container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 500px;
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 30px 25px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header {
             text-align: center;
-        }
-        h1 {
-            color: #2d3748;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            color: #718096;
             margin-bottom: 30px;
         }
-        .player {
-            background: #f7fafc;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 25px 0;
+        
+        h1 {
+            color: #2d3748;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+        
+        .subtitle {
+            color: #718096;
+            font-size: 16px;
+            font-weight: 400;
+        }
+        
+        .city-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #4299e1, #667eea);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 16px;
+            margin: 15px 0 25px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .player-container {
+            background: #f8fafc;
+            border-radius: 18px;
+            padding: 25px 20px;
+            margin: 25px 0;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .player-title {
+            color: #4a5568;
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
         audio {
             width: 100%;
-            margin-top: 15px;
+            height: 48px;
+            border-radius: 12px;
+            outline: none;
         }
-        .note {
-            font-size: 14px;
+        
+        /* iOS Safari音频控件美化 */
+        audio::-webkit-media-controls-panel {
+            background-color: #edf2f7;
+            border-radius: 12px;
+        }
+        
+        audio::-webkit-media-controls-play-button {
+            background-color: #667eea;
+            border-radius: 50%;
+        }
+        
+        .features {
+            margin: 25px 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .feature-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .feature-icon {
+            font-size: 22px;
+            margin-right: 15px;
+            margin-top: 2px;
+        }
+        
+        .feature-text {
+            flex: 1;
             color: #4a5568;
-            line-height: 1.6;
-            margin-top: 20px;
+            font-size: 15px;
+        }
+        
+        .feature-text strong {
+            color: #2d3748;
+            font-weight: 600;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #e2e8f0;
+            color: #a0aec0;
+            font-size: 13px;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 380px) {
+            .card {
+                padding: 25px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .city-tag {
+                font-size: 14px;
+                padding: 6px 16px;
+            }
+        }
+        
+        /* 加载动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card {
+            animation: fadeIn 0.6s ease-out;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>声旅茶帖</h1>
-        <div class="subtitle">Soundscape Tea Ticket</div>
+    <div class="card">
+        <div class="header">
+            <h1>声旅茶帖</h1>
+            <div class="subtitle">Soundscape Tea Ticket</div>
+            <div class="city-tag">江南 · 青花瓷</div>
+        </div>
         
-        <div class="player">
-            <p>正在播放：青花瓷 · 江南小调</p>
-            <audio controls>
-                <!-- 重要：这里必须是 song.mp3 -->
+        <div class="player-container">
+            <div class="player-title">扫码聆听城市记忆</div>
+            <audio controls controlsList="nodownload">
                 <source src="song.mp3" type="audio/mpeg">
-                您的浏览器不支持音频播放。
+                您的浏览器不支持音频播放，请尝试使用Chrome或Safari浏览器。
             </audio>
         </div>
         
-        <div class="note">
-            <p>🎵 此声音为原创弹奏的《青花瓷》片段</p>
-            <p>🍵 建议搭配龙井茶一同品味</p>
-            <p>📍 扫描车票二维码体验更多城市声音</p>
+        <div class="features">
+            <div class="feature-item">
+                <div class="feature-icon">🎵</div>
+                <div class="feature-text">
+                    <strong>原创音乐</strong><br>
+                    此音频为团队成员原创弹奏的《青花瓷》片段，融合江南小调元素。
+                </div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">🍵</div>
+                <div class="feature-text">
+                    <strong>茶音共品</strong><br>
+                    建议搭配西湖龙井一同体验，感受茶香与乐韵的交融。
+                </div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">📍</div>
+                <div class="feature-text">
+                    <strong>城市漫游</strong><br>
+                    每张"茶票"对应一座城市，扫码即可开启专属的声音旅程。
+                </div>
+            </div>
         </div>
         
-        <div style="margin-top: 25px; font-size: 12px; color: #a0aec0;">
-            一纸花约 × 声旅茶帖项目
+        <div class="footer">
+            <p>一纸花约 × 声旅茶帖项目</p>
+            <p style="margin-top: 8px; font-size: 12px;">
+                扫描包装二维码，发现更多城市声音
+            </p>
         </div>
     </div>
+    
+    <script>
+        // 增强音频体验
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.querySelector('audio');
+            
+            // 预加载音频
+            audio.preload = 'auto';
+            
+            // 添加播放状态提示
+            audio.addEventListener('play', function() {
+                console.log('开始播放城市声音');
+            });
+            
+            // 防止音频自动播放（遵守浏览器策略）
+            document.addEventListener('click', function() {
+                if (audio.paused) {
+                    // 用户交互后可播放
+                }
+            }, { once: true });
+        });
+        
+        // 防止双击缩放（iOS Safari）
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
 </body>
 </html>
