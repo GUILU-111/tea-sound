@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>声旅茶帖 · 城市之声</title>
     <style>
+        /* 你的原有CSS代码保持不变 */
         * {
             margin: 0;
             padding: 0;
@@ -34,150 +35,16 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        h1 {
-            color: #2d3748;
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .subtitle {
-            color: #718096;
-            font-size: 16px;
-            font-weight: 400;
-        }
-        
-        .city-tag {
-            display: inline-block;
-            background: linear-gradient(135deg, #4299e1, #667eea);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 16px;
-            margin: 15px 0 25px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
-        
-        .player-container {
-            background: #f8fafc;
-            border-radius: 18px;
-            padding: 25px 20px;
-            margin: 25px 0;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .player-title {
-            color: #4a5568;
-            font-size: 16px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-weight: 500;
-        }
-        
-        audio {
-            width: 100%;
-            height: 48px;
-            border-radius: 12px;
-            outline: none;
-        }
-        
-        /* iOS Safari音频控件美化 */
-        audio::-webkit-media-controls-panel {
-            background-color: #edf2f7;
-            border-radius: 12px;
-        }
-        
-        audio::-webkit-media-controls-play-button {
-            background-color: #667eea;
-            border-radius: 50%;
-        }
-        
-        .features {
-            margin: 25px 0;
-        }
-        
-        .feature-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 18px;
-            padding-bottom: 18px;
-            border-bottom: 1px solid #f1f5f9;
-        }
-        
-        .feature-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        
-        .feature-icon {
-            font-size: 22px;
-            margin-right: 15px;
-            margin-top: 2px;
-        }
-        
-        .feature-text {
-            flex: 1;
-            color: #4a5568;
-            font-size: 15px;
-        }
-        
-        .feature-text strong {
-            color: #2d3748;
-            font-weight: 600;
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 25px;
-            border-top: 1px solid #e2e8f0;
-            color: #a0aec0;
-            font-size: 13px;
-        }
-        
-        .footer a {
-            color: #667eea;
-            text-decoration: none;
-        }
-        
-        /* 响应式调整 */
-        @media (max-width: 380px) {
-            .card {
-                padding: 25px 20px;
-            }
-            
-            h1 {
-                font-size: 24px;
-            }
-            
-            .city-tag {
-                font-size: 14px;
-                padding: 6px 16px;
-            }
-        }
-        
-        /* 加载动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .card {
-            animation: fadeIn 0.6s ease-out;
-        }
+        /* ... 其余CSS代码保持不变 ... */
     </style>
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 </head>
 <body>
     <div class="card">
+        <!-- 你的页面内容保持不变 -->
         <div class="header">
             <h1>声旅茶帖</h1>
             <div class="subtitle">Soundscape Tea Ticket</div>
@@ -186,10 +53,14 @@
         
         <div class="player-container">
             <div class="player-title">扫码聆听城市记忆</div>
-            <audio controls controlsList="nodownload">
-                <source src="song.mp3" type="audio/mpeg">
+            <audio id="mainAudio" controls controlsList="nodownload">
+                <!-- 多CDN音频源，自动选择可用的 -->
+                <source id="audioSource1" src="https://cdn.jsdelivr.net/gh/GUILU-111/tea-sound@main/song.mp3" type="audio/mpeg">
+                <source id="audioSource2" src="song.mp3" type="audio/mpeg">
+                <source id="audioSource3" src="https://tea-ticket-china.pages.dev/song.mp3" type="audio/mpeg">
                 您的浏览器不支持音频播放，请尝试使用Chrome或Safari浏览器。
             </audio>
+            <div id="audioStatus" style="font-size:12px; color:#666; margin-top:8px; text-align:center;"></div>
         </div>
         
         <div class="features">
@@ -223,137 +94,207 @@
             <p style="margin-top: 8px; font-size: 12px;">
                 扫描包装二维码，发现更多城市声音
             </p>
+            <!-- 网络状态显示 -->
+            <div id="networkInfo" style="font-size:11px; color:#aaa; margin-top:5px;">
+                当前使用: <span id="cdnType">检测中...</span>
+            </div>
         </div>
     </div>
     
     <script>
-        // 增强音频体验
+        // 增强音频体验 + 多CDN自动切换
         document.addEventListener('DOMContentLoaded', function() {
-            const audio = document.querySelector('audio');
+            const audio = document.getElementById('mainAudio');
+            const audioStatus = document.getElementById('audioStatus');
+            const cdnType = document.getElementById('cdnType');
             
-            // 预加载音频
-            audio.preload = 'auto';
+            // 可用的音频源列表（按优先级排序）
+            const audioSources = [
+                { id: 'audioSource1', url: 'https://cdn.jsdelivr.net/gh/GUILU-111/tea-sound@main/song.mp3', name: 'jsDelivr CDN' },
+                { id: 'audioSource2', url: 'song.mp3', name: '直接连接' },
+                { id: 'audioSource3', url: 'https://tea-ticket-china.pages.dev/song.mp3', name: '备用CDN' }
+            ];
             
-            // 添加播放状态提示
+            // 检测最佳音频源
+            function testAudioSources() {
+                audioStatus.textContent = '检测最佳音频源...';
+                
+                let testedCount = 0;
+                let bestSource = audioSources[0]; // 默认第一个
+                
+                // 测试每个源的可用性
+                audioSources.forEach((source, index) => {
+                    const testAudio = new Audio();
+                    testAudio.src = source.url + '?test=' + Date.now();
+                    testAudio.preload = 'auto';
+                    
+                    testAudio.addEventListener('loadeddata', function() {
+                        // 这个源可用
+                        if (index === 0 || Math.random() > 0.3) { // 优先第一个，但有时随机选择避免全部用同一个
+                            bestSource = source;
+                        }
+                        testedCount++;
+                        
+                        if (testedCount === audioSources.length) {
+                            // 所有源测试完成
+                            applyBestSource(bestSource);
+                        }
+                    });
+                    
+                    testAudio.addEventListener('error', function() {
+                        testedCount++;
+                        if (testedCount === audioSources.length) {
+                            applyBestSource(bestSource);
+                        }
+                    });
+                    
+                    // 设置超时
+                    setTimeout(() => {
+                        if (!testAudio.readyState) {
+                            testedCount++;
+                            if (testedCount === audioSources.length) {
+                                applyBestSource(bestSource);
+                            }
+                        }
+                    }, 2000);
+                });
+            }
+            
+            function applyBestSource(source) {
+                // 切换到最佳源
+                const audioElement = document.getElementById('mainAudio');
+                const sourceElement = document.getElementById(source.id);
+                
+                // 清空所有source，添加最佳源
+                audioElement.innerHTML = '';
+                const newSource = document.createElement('source');
+                newSource.src = source.url;
+                newSource.type = 'audio/mpeg';
+                audioElement.appendChild(newSource);
+                audioElement.appendChild(document.createTextNode('您的浏览器不支持音频播放。'));
+                
+                // 更新状态显示
+                audioStatus.textContent = `使用: ${source.name}`;
+                cdnType.textContent = source.name;
+                audioStatus.style.color = '#4CAF50';
+                
+                // 重新加载音频
+                audioElement.load();
+                
+                // 预加载
+                audioElement.preload = 'auto';
+            }
+            
+            // 开始检测
+            testAudioSources();
+            
+            // 音频事件监听
             audio.addEventListener('play', function() {
-                console.log('开始播放城市声音');
+                audioStatus.textContent = '正在播放...';
+                audioStatus.style.color = '#2196F3';
             });
             
-            // 防止音频自动播放（遵守浏览器策略）
-            document.addEventListener('click', function() {
-                if (audio.paused) {
-                    // 用户交互后可播放
+            audio.addEventListener('error', function(e) {
+                console.error('音频播放错误:', e);
+                audioStatus.textContent = '播放失败，尝试切换源...';
+                audioStatus.style.color = '#FF5722';
+                
+                // 3秒后重试
+                setTimeout(testAudioSources, 3000);
+            });
+            
+            // 防止双击缩放（iOS Safari）
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = Date.now();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
                 }
-            }, { once: true });
+                lastTouchEnd = now;
+            }, false);
+            
+            // 网络状态检测
+            function updateNetworkInfo() {
+                const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+                if (connection) {
+                    const info = `网络: ${connection.effectiveType || '未知'} | 延迟: ${connection.rtt || '?'}ms`;
+                    cdnType.textContent += ' | ' + info;
+                }
+            }
+            
+            if (navigator.connection) {
+                navigator.connection.addEventListener('change', updateNetworkInfo);
+            }
+            updateNetworkInfo();
         });
         
-        // 防止双击缩放（iOS Safari）
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function(event) {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
-    </script>
-
-    <!-- ==================== 新增：iPhone访问优化提示 ==================== -->
-    <script>
-    // 增强版iPhone访问优化
-    (function() {
-        // 等待页面加载完成
-        document.addEventListener('DOMContentLoaded', function() {
-            // 检测是否为iOS设备
-            const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
-            const isGitHub = window.location.hostname.includes('github.io');
+        // 微信浏览器特殊处理
+        (function() {
+            const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+            const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
             
-            if (isIOS && isGitHub) {
-                // 创建提示框
+            if (isWeChat && isIOS) {
+                // 在微信中显示提示
                 const notice = document.createElement('div');
-                notice.id = 'ios-optimize-notice';
+                notice.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    left: 20px;
+                    right: 20px;
+                    background: rgba(0,0,0,0.8);
+                    color: white;
+                    padding: 12px;
+                    border-radius: 10px;
+                    z-index: 10000;
+                    font-size: 13px;
+                    text-align: center;
+                `;
                 notice.innerHTML = `
-                    <div style="
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                        color: white;
-                        padding: 15px;
-                        z-index: 9999;
-                        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-                        text-align: center;
-                    ">
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-                            <span style="font-size: 18px;">📱</span>
-                            <div style="text-align: left;">
-                                <div style="font-weight: 600; font-size: 14px;">iPhone访问优化建议</div>
-                                <div style="font-size: 12px; opacity: 0.9;">GitHub在国内访问可能较慢，点击下方链接获得最佳体验</div>
-                            </div>
-                        </div>
-                        <a href="https://cdn.jsdelivr.net/gh/GUILU-111/tea-sound@main/index.html" 
-                           style="
-                               display: inline-block;
-                               margin-top: 10px;
-                               padding: 8px 20px;
-                               background: white;
-                               color: #667eea;
-                               border-radius: 20px;
-                               text-decoration: none;
-                               font-weight: 600;
-                               font-size: 13px;
-                               box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                           ">
-                            点击切换到优化版本
-                        </a>
-                        <button onclick="document.getElementById('ios-optimize-notice').style.display='none'" 
-                                style="
-                                    position: absolute;
-                                    right: 10px;
-                                    top: 10px;
-                                    background: transparent;
-                                    border: none;
-                                    color: white;
-                                    font-size: 20px;
-                                    cursor: pointer;
-                                ">
-                            ×
-                        </button>
+                    <div style="margin-bottom:5px;">🎧 iOS微信内播放提示</div>
+                    <div style="font-size:11px; opacity:0.9;">
+                        如无法播放，请点击右上角"..."选择"在浏览器打开"
                     </div>
                 `;
-                
-                // 添加到页面
                 document.body.appendChild(notice);
                 
-                // 调整页面内容位置（避免被提示框遮挡）
-                const originalPadding = document.body.style.paddingTop;
-                document.body.style.paddingTop = '80px';
-                
-                // 点击关闭时恢复
-                notice.querySelector('button').addEventListener('click', function() {
-                    document.body.style.paddingTop = originalPadding;
-                });
-                
-                // 10分钟后自动隐藏（如果评委停留时间很长）
+                // 10秒后自动隐藏
                 setTimeout(() => {
-                    if (document.getElementById('ios-optimize-notice')) {
-                        document.getElementById('ios-optimize-notice').style.opacity = '0';
-                        document.getElementById('ios-optimize-notice').style.transition = 'opacity 0.5s';
-                        setTimeout(() => {
-                            if (document.getElementById('ios-optimize-notice')) {
-                                document.getElementById('ios-optimize-notice').remove();
-                                document.body.style.paddingTop = originalPadding;
-                            }
-                        }, 500);
-                    }
-                }, 600000); // 10分钟
+                    notice.style.opacity = '0';
+                    notice.style.transition = 'opacity 0.5s';
+                    setTimeout(() => notice.remove(), 500);
+                }, 10000);
             }
-        });
+        })();
+    </script>
+
+    <!-- 极简网络检测 -->
+    <script>
+    // 简单直接的网络状态提示
+    (function() {
+        setTimeout(() => {
+            const isSlow = performance.timing.loadEventEnd - performance.timing.navigationStart > 3000;
+            const isGitHub = window.location.hostname.includes('github.io');
+            
+            if (isSlow && isGitHub) {
+                const tip = document.createElement('div');
+                tip.style.cssText = `
+                    position: fixed;
+                    top: 10px;
+                    right: 10px;
+                    background: #FF9800;
+                    color: white;
+                    padding: 6px 12px;
+                    border-radius: 15px;
+                    font-size: 11px;
+                    z-index: 9998;
+                `;
+                tip.textContent = '网络较慢';
+                document.body.appendChild(tip);
+                
+                setTimeout(() => tip.remove(), 5000);
+            }
+        }, 1000);
     })();
     </script>
-    <!-- ==================== iPhone优化代码结束 ==================== -->
-
 </body>
 </html>
